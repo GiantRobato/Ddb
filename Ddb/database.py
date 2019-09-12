@@ -66,8 +66,10 @@ class Table(object):
         """ insert data into our storage driver and only affect THIS table
         """
         table = self._storage._read()
+        # Handles empty file case
         if table == None:
             table = {self._name: {"rows": []}}
+        # Handles first usage of table case
         if self._name not in table:
             table[self._name] = {"rows": []}
         table[self._name]["rows"].append(data)
