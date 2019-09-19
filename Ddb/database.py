@@ -1,6 +1,7 @@
 import os
 import json
 from typing import List
+from .queries import Query
 
 class StorageDriver(object):
     """ Data storage for database operations. Basically a wrapper around json
@@ -82,3 +83,14 @@ class Table(object):
             :rtype: list[dict]
         """
         return self._storage._read()[self._name]['rows']
+    
+    def search(self, query : Query):
+        """
+        """
+        rows = self._storage._read()[self._name]['rows']
+        result_set = []
+        for row in rows:
+            if query(row):
+                result_set.append(row)
+        # print(json.dumps(result_set, indent=4))
+        return result_set
