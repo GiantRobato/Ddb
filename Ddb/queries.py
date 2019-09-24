@@ -22,5 +22,18 @@ class Query(object):
                 return False
             else:
                 return value == rhs
+        return query
 
+
+    def __lt__(self, rhs):
+        """ compare against < rhs
+        """
+        def query(value):
+            try:
+                for key in self._path:
+                    value = value[key]
+            except (KeyError, TypeError):
+                return False
+            else:
+                return value < rhs
         return query
