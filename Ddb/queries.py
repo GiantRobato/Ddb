@@ -30,7 +30,37 @@ class Query(object):
         """
         return self._create_query( lambda value : value == rhs)
     
+    def __ne__(self, rhs):
+        """ compare against !=
+        """
+        return self._create_query( lambda value : value != rhs)
+
     def __lt__(self, rhs):
         """ compare against < rhs
         """
         return self._create_query( lambda value : value < rhs)
+
+    def __le__(self, rhs):
+        """ compare against <= rhs
+        """
+        return self._create_query( lambda value : value <= rhs)
+        
+    def __gt__(self, rhs):
+        """ compare against > rhs
+        """
+        return self._create_query( lambda value : value > rhs)
+
+    def __ge__(self, rhs):
+        """ compare against >= rhs
+        """
+        return self._create_query( lambda value : value >= rhs)
+    
+    def _in(self, rhs):
+        """ check if value is contained in the provided list
+        """
+        return self._create_query( lambda value : value in rhs)
+
+    def _contains(self, rhs):
+        """ check if rhs is contained in the value
+        """
+        return self._create_query( lambda value : rhs in value)

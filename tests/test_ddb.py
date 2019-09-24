@@ -57,14 +57,23 @@ def test_search_eq():
 def test_search_comparisons():
     db = Ddb.Database("data.json")
     table = db.table("Scores")
-    documents = {
-        "me" : {"name" : "Galaga", "score": 100, "player": "me"},
-        "m3" :{"name" : "Galaga", "score": 1337, "player": "m3"},
-        "bomberwoman" : {"name" : "Bomberman", "score": 8008135, "player": "bomberwoman"},
-        "hackz" :{"name" : "Bomberman", "score": 803834342, "player": "hackz"}
-    }
-    for doc in documents.values():
+    documents = [
+        {"name" : "Galaga", "score": 50, "player": "me2"},
+        {"name" : "Galaga", "score": 100, "player": "me"},
+        {"name" : "Galaga", "score": 1337, "player": "m3"},
+        {"name" : "Bomberman", "score": 808135, "player": "bomberwoman"},
+        {"name" : "Bomberman", "score": 803834342, "player": "hacker"}
+    ]
+    for doc in documents:
         table.insert(doc)
     Entry = Ddb.Query()
-    assert documents["me"] == table.search(Entry.score < 1000)[0]
-    # assert len(table.search(Entry.score <= 1337 )) == 2
+    assert len(table.search(Entry.score != 100)) == 4
+    assert len(table.search(Entry.score < 1000)) == 2
+    assert len(table.search(Entry.score < 2000)) == 3
+    assert len(table.search(Entry.score <= 1337)) == 3
+    assert len(table.search(Entry.score > 9000)) == 2
+    assert len(table.search(Entry.score > 1e7)) == 1
+    assert len(table.search(Entry.score >= 808135)) == 2
+    assert len(table.search(Entry.name._in(["Galaga"]))) == 3
+    assert len(table.search(Entry.name._in(["Space Invaders"]))) == 0
+    assert len(table.search(Entry.player._contains("me"))) == 2
