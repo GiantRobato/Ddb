@@ -28,28 +28,9 @@ class Query(object):
     def __eq__(self, rhs):
         """ get a function to call on every document using the provided path
         """
-        # def query(value):
-        #     try:
-        #         for key in self._path:
-        #             value = value[key]
-        #     except (KeyError, TypeError):
-        #         return False
-        #     else:
-        #         return value == rhs
-        # return query
-
         return self._create_query( lambda value : value == rhs)
     
     def __lt__(self, rhs):
         """ compare against < rhs
         """
-        # def query(value):
-        #     try:
-        #         for key in self._path:
-        #             value = value[key]
-        #     except (KeyError, TypeError):
-        #         return False
-        #     else:
-        #         return value < rhs
-        # return query
         return self._create_query( lambda value : value < rhs)
