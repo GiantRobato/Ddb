@@ -77,3 +77,25 @@ def test_search_comparisons():
     assert len(table.search(Entry.name._in(["Galaga"]))) == 3
     assert len(table.search(Entry.name._in(["Space Invaders"]))) == 0
     assert len(table.search(Entry.player._contains("me"))) == 2
+
+def test_deletion():
+    db = Ddb.Database("data.json")
+    table = db.table("Penguins")
+    documents = [
+        {"name" : "Pengu", "age": 5},
+        {"name" : "Emperor", "age": 32},
+        {"name" : "Queen", "age": 49},
+        {"name" : "Little", "age": 2},
+    ]
+    for doc in documents:
+        table.insert(doc)
+    assert documents == table.all() 
+    
+    Penguin = Ddb.Query()
+    young_penguins = [documents[0], documents[3]]
+    table.find_and_remove(Penguin.age > 10)
+    assert young_penguins == table.all()
+
+
+
+

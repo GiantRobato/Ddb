@@ -85,12 +85,24 @@ class Table(object):
         return self._storage._read()[self._name]['rows']
     
     def search(self, query : Query):
-        """
+        """ Applies query on each document in our database and returns back the results
+            :returns: list of documents found in the database
+            :rtype: list[Dict]
         """
         rows = self._storage._read()[self._name]['rows']
         result_set = []
         for row in rows:
             if query(row):
                 result_set.append(row)
-        # print(json.dumps(result_set, indent=4))
         return result_set
+    
+    def find_and_remove(self, query: Query):
+        """ Finds cases where the query is true and removes them
+        """
+        rows = self._storage._read()[self._name]['rows']
+        new_rows = []
+        for row in rows:
+            if not query(row):
+                new_rows.append(row)
+        new_table = {self._name: {"rows": new_rows}}
+        self._storage._write(new_table)        
