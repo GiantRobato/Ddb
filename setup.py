@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="ddb",
-    version="0.0.1",
+    version="0.2.0",
     packages=find_packages(exclude=['tests']),
     # metadata for upload to PyPI
     author="Dustin Mendoza",
